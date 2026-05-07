@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Peregrina — Casa de Eventos & Catering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* =============================================
+       CSS VARIABLES & RESET
+    ============================================= */
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #dfc18f;
+      --gold-dark: #a8854a;
+      --charcoal: #2C2C2C;
+      --charcoal-light: #3a3a3a;
+      --cream: #F5EFE6;
+      --cream-dark: #ece3d4;
+      --white: #FFFFFF;
+      --overlay: rgba(0,0,0,0.45);
+      --font-heading: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Lato', sans-serif;
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-med: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --shadow-gold: 0 4px 20px rgba(201,169,110,0.25), 0 1px 4px rgba(0,0,0,0.15);
+      --shadow-dark: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+      --container-max: 1200px;
+      --section-pad: clamp(60px, 8vw, 100px) clamp(20px, 5vw, 80px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--charcoal);
+      background: var(--charcoal);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    img { display: block; max-width: 100%; }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* =============================================
+       SVG NOISE TEXTURE FILTER (shared)
+    ============================================= */
+    .noise-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* =============================================
+       UTILITY
+    ============================================= */
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .section-heading--light { color: var(--white); }
+    .section-heading--dark  { color: var(--charcoal); }
+
+    .gold-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .gold-divider::before,
+    .gold-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .gold-divider span {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+      text-align: center;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .btn:active { transform: translateY(0) !important; }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--charcoal);
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.6);
+    }
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+    }
+    .btn-outline-gold:hover {
+      background: var(--gold);
+      color: var(--charcoal);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .btn-dark {
+      background: var(--charcoal);
+      color: var(--gold);
+      border: 1.5px solid var(--charcoal);
+    }
+    .btn-dark:hover {
+      background: var(--charcoal-light);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-dark);
+    }
+
+    /* =============================================
+       LOGO TREATMENT
+    ============================================= */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+      text-decoration: none;
+    }
+    .logo__p {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+    .logo__name {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+    .logo__sub {
+      font-family: var(--font-body);
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+    .logo--light .logo__p,
+    .logo--light .logo__name { color: var(--gold); }
+    .logo--light .logo__sub  { color: rgba(255,255,255,0.7); }
+    .logo--dark .logo__p,
+    .logo--dark .logo__name  { color: var(--charcoal); }
+    .logo--dark .logo__sub   { color: rgba(44,44,44,0.6); }
+
+    /* =============================================
+       STICKY NAV
+    ============================================= */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px clamp(20px, 4vw, 60px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background var(--transition-med), box-shadow var(--transition-med), padding var(--transition-med);
+    }
+    #site-nav.scrolled {
+      background: rgba(44,44,44,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: clamp(16px, 2.5vw, 36px);
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      transition: color var(--transition-fast);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-fast);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+    }
+    .lang-toggle span {
+      padding: 2px 5px;
+      border-radius: 2px;
+      transition: color var(--transition-fast), font-weight var(--transition-fast);
+      cursor: pointer;
+    }
+    .lang-toggle span:hover { color: var(--gold); }
+    .lang-toggle span.active {
+      font-weight: 700;
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .lang-toggle .divider { color: rgba(255,255,255,0.3); }
+
+    .btn-whatsapp-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #25D366;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 9px 18px;
+      border-radius: 2px;
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .btn-whatsapp-nav:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37,211,102,0.35);
+    }
+    .btn-whatsapp-nav:focus-visible { outline: 2px solid #25D366; outline-offset: 3px; }
+    .btn-whatsapp-nav svg { flex-shrink: 0; }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform var(--transition-fast), opacity var(--transition-fast);
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    .nav-mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44,44,44,0.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .nav-mobile-overlay.open { display: flex; }
+    .nav-mobile-overlay .nav-links {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+    .nav-mobile-overlay .nav-links a {
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+    }
+    .nav-mobile-overlay .nav-right {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(20,12,4,0.55) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(20,12,4,0.45) 0%, rgba(44,30,10,0.6) 60%, rgba(20,12,4,0.75) 100%);
+      z-index: 1;
+    }
+
+    /* Simulated string lights dots */
+    .hero-lights {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-lights::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(201,169,110,0.6) 60px,
+        rgba(201,169,110,0.6) 64px
+      );
+      filter: blur(1px);
+    }
+    .hero-lights::after {
+      content: '';
+      position: absolute;
+      top: 25%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 80px,
+        rgba(201,169,110,0.4) 80px,
+        rgba(201,169,110,0.4) 84px
+      );
+      filter: blur(1px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: clamp(100px, 12vh, 140px) clamp(24px, 6vw, 80px) clamp(60px, 8vh, 100px);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .hero-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2.6rem, 6vw, 5.5rem);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero-heading em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subheading {
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.06em;
+      margin-bottom: 48px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* =============================================
+       FLOATING FABS
+    ============================================= */
+    .fab-whatsapp {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 998;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.5), 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .fab-whatsapp:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.6);
+    }
+    .fab-whatsapp:focus-visible { outline: 2px solid #25D366; outline-offset: 3px; }
+
+    /* =============================================
+       ABOUT SECTION
+    ============================================= */
+    #about {
+      background: var(--cream);
+      padding: var(--section-pad);
+      position: relative;
+      overflow: hidden;
+    }
+    #about .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 6vw, 80px);
+      align-items: center;
+    }
+    .about-text .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      margin-bottom: 20px;
+    }
+    .about-text p {
+      font-size: 1rem;
+      color: rgba(44,44,44,0.8);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .about-ornament {
+      border: 1.5px solid var(--gold);
+      padding: 40px 36px;
+      text-align: center;
+      position: relative;
+      background: rgba(201,169,110,0.04);
+    }
+    .about-ornament::before,
+    .about-ornament::after {
+      content: '✦';
+      position: absolute;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+    .about-ornament::before { top: -0.6rem; left: 50%; transform: translateX(-50%); background: var(--cream); padding: 0 8px; }
+    .about-ornament::after  { bottom: -0.6rem; left: 50%; transform: translateX(-50%); background: var(--cream); padding: 0 8px; }
+    .about-ornament__est {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .about-ornament__main {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 600;
+      color: var(--charcoal);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .about-ornament__detail {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(44,44,44,0.55);
+    }
+
+    /* =============================================
+       EVENTS SECTION
+    ============================================= */
+    #events {
+      background: var(--charcoal);
+      padding: var(--section-pad);
+      position: relative;
+      overflow: hidden;
+    }
+    #events .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+    #events .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+    }
+    #events .section-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 12px;
+      font-weight: 300;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .event-card {
+      background: rgba(255,255,255,0.03);
+      border-top: 3px solid var(--gold);
+      padding: 36px 28px;
+      position: relative;
+      transition: transform var(--transition-med), box-shadow var(--transition-med), background var(--transition-med);
+    }
+    .event-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,110,0.1);
+    }
+    .event-card__icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--gold);
+    }
+    .event-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .event-card__body {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .event-card__cta {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap var(--transition-fast), opacity var(--transition-fast);
+    }
+    .event-card__cta:hover { gap: 14px; }
+    .event-card__cta:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+
+    /* =============================================
+       CATERING SECTION
+    ============================================= */
+    #catering {
+      background: var(--cream);
+      padding: var(--section-pad);
+    }
+    #catering .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 6vw, 64px);
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #catering .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      margin-bottom: 12px;
+    }
+    #catering .section-sub {
+      font-size: 1rem;
+      color: rgba(44,44,44,0.6);
+      font-style: italic;
+      font-family: var(--font-heading);
+    }
+    .catering-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .catering-feature {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .catering-feature__icon {
+      width: 56px;
+      height: 56px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--charcoal);
+      flex-shrink: 0;
+      box-shadow: var(--shadow-gold);
+    }
+    .catering-feature__title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 6px;
+    }
+    .catering-feature__body {
+      font-size: 0.9rem;
+      color: rgba(44,44,44,0.7);
+      line-height: 1.75;
+    }
+    .catering-cta-block {
+      background: var(--charcoal);
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .catering-cta-block p {
+      font-family: var(--font-heading);
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      flex: 1;
+      min-width: 220px;
+    }
+
+    /* =============================================
+       GALLERY SECTION
+    ============================================= */
+    #gallery {
+      background: var(--charcoal);
+      padding: var(--section-pad);
+    }
+    #gallery .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 5vw, 56px);
+    }
+    #gallery .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+    }
+
+    /* PHOTO GALLERY: Replace gradient cards with actual <img> tags when real photos are provided */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .gallery-card {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .gallery-card:hover .gallery-card__overlay { opacity: 1; }
+    .gallery-card:hover .gallery-card__bg { transform: scale(1.05); }
+    .gallery-card__bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .gallery-card__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity var(--transition-med);
+      z-index: 2;
+    }
+    .gallery-card__label {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.03em;
+    }
+    /* Static label visible by default */
+    .gallery-card__label-static {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 16px 14px;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      z-index: 2;
+    }
+
+    /* About photo */
+    .about-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      border: 2px solid var(--gold);
+      aspect-ratio: 4/5;
+      box-shadow: var(--shadow-dark);
+    }
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .about-image:hover img { transform: scale(1.04); }
+    .about-image__caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 32px 20px 16px;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .gallery-instagram {
+      text-align: center;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.05em;
+    }
+    .gallery-instagram a {
+      color: var(--gold);
+      font-weight: 700;
+      transition: color var(--transition-fast);
+    }
+    .gallery-instagram a:hover { color: var(--gold-light); }
+    .gallery-instagram a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+
+    /* =============================================
+       PACKAGES SECTION
+    ============================================= */
+    #packages {
+      background: var(--cream);
+      padding: var(--section-pad);
+    }
+    #packages .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+    #packages .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+    }
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .package-card {
+      background: var(--white);
+      border: 1px solid rgba(44,44,44,0.08);
+      padding: 36px 28px;
+      position: relative;
+      transition: transform var(--transition-med), box-shadow var(--transition-med);
+    }
+    .package-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .package-card--featured {
+      border: 2px solid var(--gold);
+      background: var(--white);
+      box-shadow: var(--shadow-gold);
+    }
+    .package-badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .package-badge--popular {
+      background: var(--charcoal);
+      color: var(--gold);
+    }
+    .package-badge--featured {
+      background: var(--gold);
+      color: var(--charcoal);
+    }
+    .package-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+      line-height: 1.15;
+    }
+    .package-card__subtitle {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .package-divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-bottom: 20px;
+    }
+    .package-card__body {
+      font-size: 0.9rem;
+      color: rgba(44,44,44,0.7);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    /* =============================================
+       TESTIMONIALS SECTION
+    ============================================= */
+    #testimonials {
+      background: var(--charcoal);
+      padding: var(--section-pad);
+      position: relative;
+    }
+    #testimonials .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+    #testimonials .section-heading {
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,169,110,0.1);
+      padding: 36px 28px;
+      position: relative;
+      transition: transform var(--transition-med), background var(--transition-med);
+    }
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.055);
+    }
+    .testimonial-quote {
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      color: var(--gold);
+      line-height: 0.7;
+      margin-bottom: 16px;
+      opacity: 0.6;
+      display: block;
+    }
+    .testimonial-card__body {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .testimonial-card__divider {
+      height: 1px;
+      background: rgba(201,169,110,0.25);
+      margin-bottom: 16px;
+    }
+    .testimonial-card__author {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* =============================================
+       INQUIRY FORM SECTION
+    ============================================= */
+    #inquiry {
+      background: var(--cream);
+      padding: var(--section-pad);
+    }
+    #inquiry .section-header {
+      text-align: center;
+      margin-bottom: clamp(40px, 5vw, 56px);
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #inquiry .section-heading {
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      margin-bottom: 12px;
+    }
+    #inquiry .section-sub {
+      font-size: 1rem;
+      color: rgba(44,44,44,0.6);
+      font-style: italic;
+      font-family: var(--font-heading);
+    }
+    .inquiry-form {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--white);
+      padding: clamp(32px, 5vw, 56px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(44,44,44,0.65);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      background: var(--cream);
+      border: 1.5px solid rgba(44,44,44,0.12);
+      padding: 12px 16px;
+      border-radius: 2px;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,169,110,0.18);
+    }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-group select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A96E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+
+    .form-radio-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .form-radio-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      cursor: pointer;
+    }
+    .form-radio-label input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .form-submit-row { margin-top: 8px; }
+    .form-submit-row .btn { width: 100%; justify-content: center; padding: 16px; font-size: 0.85rem; }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .form-success__icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(201,169,110,0.12);
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: var(--gold);
+    }
+    .form-success__heading {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+    .form-success__body {
+      font-size: 0.95rem;
+      color: rgba(44,44,44,0.65);
+    }
+
+    /* GHL Chatbot placeholder comment is in HTML */
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    #footer {
+      background: var(--charcoal);
+      padding: clamp(48px, 7vw, 80px) clamp(20px, 5vw, 80px) 0;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: clamp(32px, 5vw, 64px);
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .footer-col__heading {
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .footer-col p {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color var(--transition-fast);
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-links a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-contact-item svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
+    .footer-contact-item a { transition: color var(--transition-fast); }
+    .footer-contact-item a:hover { color: var(--gold); }
+    .footer-contact-item a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+    .footer-bar {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-bar p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+
+    /* =============================================
+       SCROLL REVEAL ANIMATIONS
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.reveal--left {
+      transform: translateX(-32px);
+    }
+    .reveal.reveal--right {
+      transform: translateX(32px);
+    }
+    .reveal.reveal--scale {
+      transform: scale(0.95);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+    .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.13s; }
+    .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.21s; }
+    .reveal-stagger.visible > * { opacity: 1; transform: none; }
+
+    /* Clip-path reveal for gallery */
+    .reveal-clip {
+      clip-path: inset(0 100% 0 0);
+      transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal-clip.visible { clip-path: inset(0 0% 0 0); }
+
+    /* =============================================
+       RESPONSIVE — TABLET (≤900px)
+    ============================================= */
+    @media (max-width: 900px) {
+      #about .container { grid-template-columns: 1fr; }
+      .events-grid { grid-template-columns: 1fr; gap: 16px; }
+      .catering-features { grid-template-columns: 1fr; gap: 24px; }
+      .packages-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE (≤600px)
+    ============================================= */
+    @media (max-width: 600px) {
+      .nav-links, .nav-right { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .hero-ctas .btn { width: 100%; max-width: 320px; }
+      .catering-cta-block { flex-direction: column; text-align: center; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .inquiry-form { padding: 24px 20px; }
+      .about-ornament { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       STICKY NAVIGATION
+  ============================================= -->
+  <nav id="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="#hero" class="logo logo--light" aria-label="La Peregrina — Inicio">
+      <span class="logo__p">P</span>
+      <span class="logo__name">La Peregrina</span>
+      <span class="logo__sub">Casa de Eventos &amp; Catering</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="#hero"         data-es="Inicio"    data-en="Home">Inicio</a></li>
+      <li><a href="#events"       data-es="Eventos"   data-en="Events">Eventos</a></li>
+      <li><a href="#catering"     data-es="Catering"  data-en="Catering">Catering</a></li>
+      <li><a href="#gallery"      data-es="Galería"   data-en="Gallery">Galería</a></li>
+      <li><a href="#inquiry"      data-es="Contacto"  data-en="Contact">Contacto</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="lang-toggle" role="group" aria-label="Language selector">
+        <span id="lang-es" class="active" tabindex="0" role="button" aria-pressed="true" onclick="setLang('es')" onkeydown="if(event.key==='Enter'||event.key===' ')setLang('es')">ES</span>
+        <span class="divider">|</span>
+        <span id="lang-en" tabindex="0" role="button" aria-pressed="false" onclick="setLang('en')" onkeydown="if(event.key==='Enter'||event.key===' ')setLang('en')">EN</span>
+      </div>
+      <a href="https://wa.me/51988488968" target="_blank" rel="noopener" class="btn-whatsapp-nav" aria-label="WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span data-es="WhatsApp" data-en="WhatsApp">WhatsApp</span>
+      </a>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-mobile-overlay">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="nav-mobile-overlay" id="nav-mobile-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <ul class="nav-links" role="list">
+      <li><a href="#hero"     data-es="Inicio"    data-en="Home"     onclick="closeMobileNav()">Inicio</a></li>
+      <li><a href="#events"   data-es="Eventos"   data-en="Events"   onclick="closeMobileNav()">Eventos</a></li>
+      <li><a href="#catering" data-es="Catering"  data-en="Catering" onclick="closeMobileNav()">Catering</a></li>
+      <li><a href="#gallery"  data-es="Galería"   data-en="Gallery"  onclick="closeMobileNav()">Galería</a></li>
+      <li><a href="#inquiry"  data-es="Contacto"  data-en="Contact"  onclick="closeMobileNav()">Contacto</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <span id="lang-es-mob" class="active" tabindex="0" role="button" onclick="setLang('es');closeMobileNav()" onkeydown="if(event.key==='Enter')setLang('es')">ES</span>
+        <span class="divider">|</span>
+        <span id="lang-en-mob" tabindex="0" role="button" onclick="setLang('en');closeMobileNav()" onkeydown="if(event.key==='Enter')setLang('en')">EN</span>
+      </div>
+      <a href="https://wa.me/51988488968" target="_blank" rel="noopener" class="btn-whatsapp-nav" onclick="closeMobileNav()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+
+  <!-- =============================================
+       HERO SECTION
+  ============================================= -->
+  <section id="hero">
+    <div class="hero-bg">
+      <img
+        src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1920&q=80"
+        alt="Salón de eventos elegante La Peregrina"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="hero-lights"></div>
+    <div class="noise-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span data-es="Pachacamac, Lima — Perú" data-en="Pachacamac, Lima — Peru">Pachacamac, Lima — Perú</span>
+      </div>
+      <h1 class="hero-heading reveal">
+        <em data-es="Donde cada evento" data-en="Where every event">Donde cada evento</em><br>
+        <span data-es="se convierte en un recuerdo" data-en="becomes a memory">se convierte en un recuerdo</span>
+      </h1>
+      <p class="hero-subheading reveal" style="transition-delay:0.15s" data-es="Casa de Eventos &amp; Catering en Pachacamac, Lima" data-en="Event Venue &amp; Catering in Pachacamac, Lima">
+        Casa de Eventos &amp; Catering en Pachacamac, Lima
+      </p>
+      <div class="hero-ctas reveal" style="transition-delay:0.28s">
+        <a href="#inquiry" class="btn btn-primary" data-es="Cotiza tu Evento" data-en="Get a Quote">Cotiza tu Evento</a>
+        <a href="#about"   class="btn btn-secondary" data-es="Conoce más" data-en="Learn More">Conoce más</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       ABOUT SECTION
+  ============================================= -->
+  <section id="about">
+    <div class="container">
+      <div class="about-text reveal reveal--left">
+        <span class="section-label" data-es="Nuestra Historia" data-en="Our Story">Nuestra Historia</span>
+        <h2 class="section-heading section-heading--dark" data-es="Una pasión hecha evento" data-en="A passion made into events">Una pasión hecha evento</h2>
+        <div class="gold-divider"><span>✦</span></div>
+        <p data-es="La Peregrina nació con una sola misión: que cada evento sea perfecto. Ubicados en el corazón de Pachacamac, Lima, combinamos un espacio elegante con un servicio de catering de primera para que tú solo te preocupes de disfrutar." data-en="La Peregrina was born with one mission: to make every event perfect. Located in the heart of Pachacamac, Lima, we combine an elegant space with premium catering so all you have to do is enjoy.">
+          La Peregrina nació con una sola misión: que cada evento sea perfecto. Ubicados en el corazón de Pachacamac, Lima, combinamos un espacio elegante con un servicio de catering de primera para que tú solo te preocupes de disfrutar.
+        </p>
+        <p data-es="Cuidamos cada detalle — porque los detalles son todo." data-en="We take care of every detail — because the details are everything.">
+          Cuidamos cada detalle — porque los detalles son todo.
+        </p>
+        <a href="#inquiry" class="btn btn-outline-gold" style="margin-top:8px" data-es="Cotizar ahora" data-en="Get a quote now">Cotizar ahora</a>
+      </div>
+      <div class="about-image reveal reveal--right">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=80"
+          alt="Gastronomía elegante y catering de primera"
+          loading="lazy"
+        />
+        <span class="about-image__caption" data-es="Gastronomía de autor" data-en="Signature cuisine">Gastronomía de autor</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       EVENTS SECTION
+  ============================================= -->
+  <section id="events">
+    <div class="noise-overlay"></div>
+    <div class="container" style="position:relative;z-index:2">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Lo que hacemos" data-en="What we do">Lo que hacemos</span>
+        <h2 class="section-heading section-heading--light" data-es="Nuestros Eventos" data-en="Our Events">Nuestros Eventos</h2>
+        <p class="section-sub" data-es="Cada celebración merece ser perfecta" data-en="Every celebration deserves to be perfect">Cada celebración merece ser perfecta</p>
+      </div>
+      <div class="events-grid reveal-stagger">
+        <!-- Card 1: Weddings -->
+        <article class="event-card">
+          <div class="event-card__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="15" cy="9" r="3"/><path d="M9 12c0 3 1.5 5 3 5s3-2 3-5"/><path d="M6 9a3 3 0 00-3 3v0a3 3 0 006 0"/><path d="M18 9a3 3 0 013 3v0a3 3 0 01-6 0"/></svg>
+          </div>
+          <h3 class="event-card__title" data-es="Bodas" data-en="Weddings">Bodas</h3>
+          <p class="event-card__body" data-es="Hacemos realidad la boda que siempre soñaste. Cada detalle, perfectamente coordinado." data-en="We bring your dream wedding to life. Every detail, perfectly coordinated.">
+            Hacemos realidad la boda que siempre soñaste. Cada detalle, perfectamente coordinado.
+          </p>
+          <a href="#inquiry" class="event-card__cta" data-es="Consultar →" data-en="Inquire →">Consultar →</a>
+        </article>
+        <!-- Card 2: Celebrations -->
+        <article class="event-card">
+          <div class="event-card__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+          </div>
+          <h3 class="event-card__title" data-es="Cumpleaños &amp; Celebraciones" data-en="Birthdays &amp; Celebrations">Cumpleaños &amp; Celebraciones</h3>
+          <p class="event-card__body" data-es="Desde íntimas reuniones hasta grandes fiestas, creamos momentos inolvidables." data-en="From intimate gatherings to grand parties, we create unforgettable moments.">
+            Desde íntimas reuniones hasta grandes fiestas, creamos momentos inolvidables.
+          </p>
+          <a href="#inquiry" class="event-card__cta" data-es="Consultar →" data-en="Inquire →">Consultar →</a>
+        </article>
+        <!-- Card 3: Corporate -->
+        <article class="event-card">
+          <div class="event-card__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <h3 class="event-card__title" data-es="Eventos Corporativos" data-en="Corporate Events">Eventos Corporativos</h3>
+          <p class="event-card__body" data-es="Reuniones, lanzamientos, team building — espacios profesionales con toque elegante." data-en="Meetings, launches, team building — professional spaces with an elegant touch.">
+            Reuniones, lanzamientos, team building — espacios profesionales con toque elegante.
+          </p>
+          <a href="#inquiry" class="event-card__cta" data-es="Consultar →" data-en="Inquire →">Consultar →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       CATERING SECTION
+  ============================================= -->
+  <section id="catering">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Gastronomía" data-en="Gastronomy">Gastronomía</span>
+        <h2 class="section-heading section-heading--dark" data-es="Catering de Primera" data-en="Premium Catering">Catering de Primera</h2>
+        <p class="section-sub" data-es="No solo el espacio — también la experiencia gastronómica" data-en="Not just the venue — the full gastronomic experience">No solo el espacio — también la experiencia gastronómica</p>
+      </div>
+      <div class="catering-features reveal-stagger">
+        <div class="catering-feature">
+          <div class="catering-feature__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+          </div>
+          <div>
+            <h3 class="catering-feature__title" data-es="Mesas de quesos y embutidos" data-en="Artisan cheese &amp; charcuterie boards">Mesas de quesos y embutidos</h3>
+            <p class="catering-feature__body" data-es="Tablas artesanales con selección premium de quesos, embutidos, frutas y acompañamientos para impresionar a tus invitados." data-en="Artisan boards with premium selection of cheeses, charcuterie, fruits, and accompaniments to impress your guests.">
+              Tablas artesanales con selección premium de quesos, embutidos, frutas y acompañamientos para impresionar a tus invitados.
+            </p>
+          </div>
+        </div>
+        <div class="catering-feature">
+          <div class="catering-feature__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div>
+            <h3 class="catering-feature__title" data-es="Menús personalizados" data-en="Custom menus">Menús personalizados</h3>
+            <p class="catering-feature__body" data-es="Diseñamos cada menú según tu visión, estilo y tipo de evento. Cocina peruana e internacional de autor." data-en="We design every menu according to your vision, style, and event type. Peruvian and international signature cuisine.">
+              Diseñamos cada menú según tu visión, estilo y tipo de evento. Cocina peruana e internacional de autor.
+            </p>
+          </div>
+        </div>
+        <div class="catering-feature">
+          <div class="catering-feature__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <h3 class="catering-feature__title" data-es="Coordinación total" data-en="Total coordination">Coordinación total</h3>
+            <p class="catering-feature__body" data-es="Coordinamos con todos tus proveedores para que el día de tu evento todo fluya sin esfuerzo de tu parte." data-en="We coordinate with all your vendors so that on your event day everything flows effortlessly on your part.">
+              Coordinamos con todos tus proveedores para que el día de tu evento todo fluya sin esfuerzo de tu parte.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="catering-cta-block reveal">
+        <p data-es="¿Deseas cotizar solo catering, solo el local, o ambos?" data-en="Would you like to quote catering only, venue only, or both?">
+          ¿Deseas cotizar solo catering, solo el local, o ambos?
+        </p>
+        <a href="#inquiry" class="btn btn-primary" data-es="Solicitar cotización" data-en="Request a quote">Solicitar cotización</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       GALLERY SECTION
+  ============================================= -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Nuestro trabajo" data-en="Our work">Nuestro trabajo</span>
+        <h2 class="section-heading section-heading--light" data-es="Galería" data-en="Gallery">Galería</h2>
+      </div>
+
+      <!-- PHOTO GALLERY: Replace gradient cards with actual <img> tags when real photos are provided -->
+      <div class="gallery-grid reveal-stagger">
+        <div class="gallery-card gallery-card--weddings">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Bodas" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Bodas" data-en="Weddings">Bodas</div>
+        </div>
+        <div class="gallery-card gallery-card--celebrations">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=80" alt="Celebraciones" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Celebraciones" data-en="Celebrations">Celebraciones</div>
+        </div>
+        <div class="gallery-card gallery-card--catering">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80" alt="Catering" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Catering" data-en="Catering">Catering</div>
+        </div>
+        <div class="gallery-card gallery-card--evening">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="Eventos Nocturnos" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Eventos Nocturnos" data-en="Evening Events">Eventos Nocturnos</div>
+        </div>
+        <div class="gallery-card gallery-card--garden">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=800&q=80" alt="Jardín" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Jardín" data-en="Garden">Jardín</div>
+        </div>
+        <div class="gallery-card gallery-card--corporate">
+          <img class="gallery-card__bg" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80" alt="Corporativo" loading="lazy" />
+          <div class="gallery-card__label-static" data-es="Corporativo" data-en="Corporate">Corporativo</div>
+        </div>
+      </div>
+
+      <p class="gallery-instagram">
+        <span data-es="Visita nuestro Instagram para ver más " data-en="Visit our Instagram for more ">Visita nuestro Instagram para ver más </span><a href="https://www.instagram.com/laperegrina_pe" target="_blank" rel="noopener">@laperegrina_pe</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PACKAGES SECTION
+  ============================================= -->
+  <section id="packages">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Opciones" data-en="Options">Opciones</span>
+        <h2 class="section-heading section-heading--dark" data-es="Nuestros Paquetes" data-en="Our Packages">Nuestros Paquetes</h2>
+      </div>
+      <div class="packages-grid reveal-stagger">
+        <!-- Package 1 -->
+        <div class="package-card">
+          <h3 class="package-card__title" data-es="Solo Local" data-en="Venue Only">Solo Local</h3>
+          <p class="package-card__subtitle" data-es="El espacio perfecto" data-en="The perfect space">El espacio perfecto</p>
+          <div class="package-divider"></div>
+          <p class="package-card__body" data-es="Acceso exclusivo al espacio, coordinación de proveedores, ambientación incluida. Tú traes el catering, nosotros ponemos el escenario." data-en="Exclusive venue access, vendor coordination, ambiance setup included. You bring the catering, we set the stage.">
+            Acceso exclusivo al espacio, coordinación de proveedores, ambientación incluida. Tú traes el catering, nosotros ponemos el escenario.
+          </p>
+          <a href="#inquiry" class="btn btn-dark" style="width:100%;display:block;text-align:center" data-es="Consultar Precio" data-en="Inquire About Pricing">Consultar Precio</a>
+        </div>
+        <!-- Package 2 (Popular) -->
+        <div class="package-card">
+          <span class="package-badge package-badge--popular" data-es="Popular" data-en="Popular">Popular</span>
+          <h3 class="package-card__title" data-es="Solo Catering" data-en="Catering Only">Solo Catering</h3>
+          <p class="package-card__subtitle" data-es="Gastronomía de primera" data-en="Premium gastronomy">Gastronomía de primera</p>
+          <div class="package-divider"></div>
+          <p class="package-card__body" data-es="Menú personalizado, servicio completo, coordinación gastronómica. Llevamos nuestra cocina donde tú lo necesites." data-en="Custom menu, full service, gastronomic coordination. We bring our kitchen wherever you need it.">
+            Menú personalizado, servicio completo, coordinación gastronómica. Llevamos nuestra cocina donde tú lo necesites.
+          </p>
+          <a href="#inquiry" class="btn btn-dark" style="width:100%;display:block;text-align:center" data-es="Consultar Precio" data-en="Inquire About Pricing">Consultar Precio</a>
+        </div>
+        <!-- Package 3 (Featured) -->
+        <div class="package-card package-card--featured">
+          <span class="package-badge package-badge--featured" data-es="Recomendado" data-en="Recommended">Recomendado</span>
+          <h3 class="package-card__title" data-es="Local + Catering" data-en="Venue + Catering">Local + Catering</h3>
+          <p class="package-card__subtitle" data-es="La experiencia completa" data-en="The complete experience">La experiencia completa</p>
+          <div class="package-divider"></div>
+          <p class="package-card__body" data-es="La experiencia completa — espacio, gastronomía y coordinación total. Sin estrés, solo disfruta tu evento." data-en="The full experience — venue, catering, and total coordination. No stress, just enjoy your event.">
+            La experiencia completa — espacio, gastronomía y coordinación total. Sin estrés, solo disfruta tu evento.
+          </p>
+          <a href="#inquiry" class="btn btn-primary" style="width:100%;display:block;text-align:center" data-es="Consultar Precio" data-en="Inquire About Pricing">Consultar Precio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       TESTIMONIALS SECTION
+  ============================================= -->
+  <section id="testimonials">
+    <div class="noise-overlay"></div>
+    <div class="container" style="position:relative;z-index:2">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Testimonios" data-en="Testimonials">Testimonios</span>
+        <h2 class="section-heading section-heading--light" data-es="Lo que dicen nuestros clientes" data-en="What our clients say">Lo que dicen nuestros clientes</h2>
+      </div>
+      <div class="testimonials-grid reveal-stagger">
+        <div class="testimonial-card">
+          <span class="testimonial-quote" aria-hidden="true">"</span>
+          <p class="testimonial-card__body" data-es="La Peregrina hizo nuestra boda perfecta. Cada detalle estuvo cuidado al máximo. Nuestros invitados todavía hablan del catering." data-en="La Peregrina made our wedding perfect. Every detail was handled beautifully. Our guests still talk about the catering.">
+            La Peregrina hizo nuestra boda perfecta. Cada detalle estuvo cuidado al máximo. Nuestros invitados todavía hablan del catering.
+          </p>
+          <div class="testimonial-card__divider"></div>
+          <p class="testimonial-card__author" data-es="María &amp; Carlos — Boda 2023" data-en="María &amp; Carlos — Wedding 2023">María &amp; Carlos — Boda 2023</p>
+        </div>
+        <div class="testimonial-card">
+          <span class="testimonial-quote" aria-hidden="true">"</span>
+          <p class="testimonial-card__body" data-es="Organizamos el evento corporativo anual de nuestra empresa aquí y fue impecable. Profesionalismo de primer nivel." data-en="We held our company's annual corporate event here and it was flawless. Top-level professionalism.">
+            Organizamos el evento corporativo anual de nuestra empresa aquí y fue impecable. Profesionalismo de primer nivel.
+          </p>
+          <div class="testimonial-card__divider"></div>
+          <p class="testimonial-card__author" data-es="Roberto M. — Empresa Privada" data-en="Roberto M. — Private Company">Roberto M. — Empresa Privada</p>
+        </div>
+        <div class="testimonial-card">
+          <span class="testimonial-quote" aria-hidden="true">"</span>
+          <p class="testimonial-card__body" data-es="El quinceañero de mi hija superó todas nuestras expectativas. El equipo de La Peregrina es extraordinario." data-en="My daughter's quinceañera exceeded all our expectations. The La Peregrina team is extraordinary.">
+            El quinceañero de mi hija superó todas nuestras expectativas. El equipo de La Peregrina es extraordinario.
+          </p>
+          <div class="testimonial-card__divider"></div>
+          <p class="testimonial-card__author" data-es="Patricia L. — Lima" data-en="Patricia L. — Lima">Patricia L. — Lima</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       INQUIRY FORM SECTION
+  ============================================= -->
+  <section id="inquiry">
+    <!-- GHL CHATBOT: Paste your GoHighLevel chatbot embed code here -->
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label" data-es="Contáctanos" data-en="Contact us">Contáctanos</span>
+        <h2 class="section-heading section-heading--dark" data-es="Cotiza tu Evento" data-en="Get a Quote">Cotiza tu Evento</h2>
+        <p class="section-sub" data-es="Cuéntanos sobre tu evento y te contactamos en menos de 24 horas" data-en="Tell us about your event and we'll reach out within 24 hours">Cuéntanos sobre tu evento y te contactamos en menos de 24 horas</p>
+      </div>
+      <div class="inquiry-form reveal">
+        <form id="inquiry-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="field-name" data-es="Nombre completo" data-en="Full name">Nombre completo</label>
+              <input type="text" id="field-name" name="nombre" required
+                data-placeholder-es="Tu nombre completo" data-placeholder-en="Your full name"
+                placeholder="Tu nombre completo" />
+            </div>
+            <div class="form-group">
+              <label for="field-event" data-es="Tipo de evento" data-en="Event type">Tipo de evento</label>
+              <select id="field-event" name="tipo_evento" required>
+                <option value="" data-es="Selecciona…" data-en="Select…">Selecciona…</option>
+                <option value="boda"       data-es="Boda"              data-en="Wedding">Boda</option>
+                <option value="cumple"     data-es="Cumpleaños"        data-en="Birthday">Cumpleaños</option>
+                <option value="corporativo" data-es="Evento Corporativo" data-en="Corporate Event">Evento Corporativo</option>
+                <option value="quince"     data-es="Quinceañero"       data-en="Quinceañera">Quinceañero</option>
+                <option value="otro"       data-es="Otro"              data-en="Other">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="field-date" data-es="Fecha del evento" data-en="Event date">Fecha del evento</label>
+              <input type="date" id="field-date" name="fecha" required />
+            </div>
+            <div class="form-group">
+              <label for="field-guests" data-es="Cantidad de invitados" data-en="Number of guests">Cantidad de invitados</label>
+              <input type="number" id="field-guests" name="invitados" min="1" required
+                data-placeholder-es="Ej. 150" data-placeholder-en="e.g. 150"
+                placeholder="Ej. 150" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-es="¿Deseas cotizar Local, Catering o Ambos?" data-en="Venue, Catering, or Both?">¿Deseas cotizar Local, Catering o Ambos?</label>
+            <div class="form-radio-group">
+              <label class="form-radio-label">
+                <input type="radio" name="cotizar" value="local" required />
+                <span data-es="Solo Local" data-en="Venue Only">Solo Local</span>
+              </label>
+              <label class="form-radio-label">
+                <input type="radio" name="cotizar" value="catering" />
+                <span data-es="Solo Catering" data-en="Catering Only">Solo Catering</span>
+              </label>
+              <label class="form-radio-label">
+                <input type="radio" name="cotizar" value="ambos" />
+                <span data-es="Ambos" data-en="Both">Ambos</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="field-message" data-es="Mensaje adicional" data-en="Additional message">Mensaje adicional</label>
+            <textarea id="field-message" name="mensaje"
+              data-placeholder-es="Cuéntanos más sobre tu evento…" data-placeholder-en="Tell us more about your event…"
+              placeholder="Cuéntanos más sobre tu evento…"></textarea>
+          </div>
+          <div class="form-submit-row">
+            <button type="submit" class="btn btn-primary" data-es="Enviar Consulta" data-en="Send Inquiry">Enviar Consulta</button>
+          </div>
+        </form>
+        <div class="form-success" id="form-success" aria-live="polite">
+          <div class="form-success__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="form-success__heading" data-es="¡Gracias!" data-en="Thank you!">¡Gracias!</h3>
+          <p class="form-success__body" data-es="Te contactaremos pronto. Nos vemos en La Peregrina." data-en="We'll be in touch soon. See you at La Peregrina.">
+            Te contactaremos pronto. Nos vemos en La Peregrina.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer id="footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="#hero" class="logo logo--light" style="align-items:flex-start;margin-bottom:20px" aria-label="La Peregrina">
+          <span class="logo__p">P</span>
+          <span class="logo__name">La Peregrina</span>
+          <span class="logo__sub">Casa de Eventos &amp; Catering</span>
+        </a>
+        <p data-es="Creamos eventos perfectos en Pachacamac, Lima. Cada detalle, cada momento, cada recuerdo — hecho con amor." data-en="We create perfect events in Pachacamac, Lima. Every detail, every moment, every memory — made with love.">
+          Creamos eventos perfectos en Pachacamac, Lima. Cada detalle, cada momento, cada recuerdo — hecho con amor.
+        </p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__heading" data-es="Navegación" data-en="Navigation">Navegación</p>
+        <ul class="footer-links" role="list">
+          <li><a href="#hero"         data-es="Inicio"    data-en="Home">Inicio</a></li>
+          <li><a href="#events"       data-es="Eventos"   data-en="Events">Eventos</a></li>
+          <li><a href="#catering"     data-es="Catering"  data-en="Catering">Catering</a></li>
+          <li><a href="#gallery"      data-es="Galería"   data-en="Gallery">Galería</a></li>
+          <li><a href="#packages"     data-es="Paquetes"  data-en="Packages">Paquetes</a></li>
+          <li><a href="#inquiry"      data-es="Contacto"  data-en="Contact">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__heading" data-es="Contáctanos" data-en="Contact">Contáctanos</p>
+        <div class="footer-contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <a href="https://wa.me/51988488968" target="_blank" rel="noopener">+51 988 488 968</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          <a href="https://www.instagram.com/laperegrina_pe" target="_blank" rel="noopener">@laperegrina_pe</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span data-es="Pachacamac, Lima, Perú" data-en="Pachacamac, Lima, Peru">Pachacamac, Lima, Perú</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <p data-es="© 2025 La Peregrina — Casa de Eventos &amp; Catering. Todos los derechos reservados." data-en="© 2025 La Peregrina — Casa de Eventos &amp; Catering. All rights reserved.">
+        © 2025 La Peregrina — Casa de Eventos &amp; Catering. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       FLOATING WHATSAPP FAB
+  ============================================= -->
+  <a href="https://wa.me/51988488968" target="_blank" rel="noopener" class="fab-whatsapp" aria-label="Chatear por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- GHL CHATBOT EMBED: Replace this div with your GoHighLevel chatbot embed code -->
+  <div id="ghl-chatbot-placeholder" style="position:fixed;bottom:94px;right:24px;width:52px;height:52px;background:#C9A96E;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(201,169,110,0.4),0 2px 6px rgba(0,0,0,0.2);z-index:999;" aria-label="Chat" role="button" tabindex="0">
+    <span style="color:white;font-size:22px;line-height:1;" aria-hidden="true">💬</span>
+  </div>
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    // ---- Language System ----
+    let currentLang = localStorage.getItem('lp_lang') || 'es';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lp_lang', lang);
+
+      // Swap all text nodes with data-es / data-en
+      document.querySelectorAll('[data-es]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+
+      // Swap placeholders
+      document.querySelectorAll('[data-placeholder-es]').forEach(el => {
+        el.placeholder = el.getAttribute('data-placeholder-' + lang);
+      });
+
+      // Update toggle active state (desktop + mobile)
+      ['es','en'].forEach(l => {
+        const desktopEl = document.getElementById('lang-' + l);
+        const mobileEl  = document.getElementById('lang-' + l + '-mob');
+        const isActive  = l === lang;
+        if (desktopEl) {
+          desktopEl.classList.toggle('active', isActive);
+          desktopEl.setAttribute('aria-pressed', String(isActive));
+        }
+        if (mobileEl) {
+          mobileEl.classList.toggle('active', isActive);
+        }
+      });
+
+      // Update html lang attr
+      document.documentElement.lang = lang;
+    }
+
+    // Init on load
+    document.addEventListener('DOMContentLoaded', () => {
+      setLang(currentLang);
+    });
+
+    // ---- Sticky Nav ----
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // ---- Mobile Nav ----
+    const hamburger = document.getElementById('nav-hamburger');
+    const mobileOverlay = document.getElementById('nav-mobile-overlay');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileOverlay.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    function closeMobileNav() {
+      mobileOverlay.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // Close on ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mobileOverlay.classList.contains('open')) closeMobileNav();
+    });
+
+    // ---- Scroll Reveal (IntersectionObserver) ----
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-stagger, .reveal-clip').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // Hero reveals on load (already in viewport)
+    window.addEventListener('load', () => {
+      document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 100 + i * 160);
+      });
+    });
+
+    // ---- Form Submit ----
+    const form = document.getElementById('inquiry-form');
+    const formSuccess = document.getElementById('form-success');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+      // Apply current lang to success message
+      formSuccess.querySelectorAll('[data-es]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      });
+    });
+
+    // ---- Smooth Scroll for anchor links ----
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          const navH = nav.offsetHeight;
+          const top = target.getBoundingClientRect().top + window.pageYOffset - navH;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
